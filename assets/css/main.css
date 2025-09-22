@@ -9,6 +9,13 @@
 /*--------------------------------------------------------------
 # Font & Color Variables
 # Help: color-system/
+
+/* Reduz o padding na seção do título dos depoimentos */
+.testimonials-outside-title {
+    padding-top: 50px;    /* Reduz o espaço acima do título */
+    padding-bottom: 0px;  /* Remove o espaço abaixo do título */
+    margin-bottom: 0px;   /* Garante que não haja margem extra */
+}
 --------------------------------------------------------------*/
 /* Fonts */
 :root {
