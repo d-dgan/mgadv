@@ -4,12 +4,56 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Muraro Gonçalves Advocacia Previdenciária Especializada</title>
-  <meta name="description" content="Especialistas em direito previdenciário: aposentadoria, pensão por morte, auxílio-doença e outros benefícios do INSS.">
-  <meta name="keywords" content="advocacia previdenciária, direito aprevidenciário, aposentadoria, INSS, pensão por morte, auxílio-doença, BPC/LOAS">
+  <title>Advocacia Previdenciária em Siqueira Campos/PR | Muraro Gonçalves</title>
+  <meta name="description" content="Especialistas em direito previdenciário em Siqueira Campos e Quatiguá/PR: aposentadoria, pensão por morte, auxílio-doença e outros benefícios do INSS.">
+  <meta name="keywords" content="advocacia previdenciária, direito previdenciário, aposentadoria, INSS, pensão por morte, auxílio-doença, BPC/LOAS, advogado Siqueira Campos">
 
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/logo.png" rel="apple-touch-icon">
+  <link rel="canonical" href="https://murarogoncalves.com/">
+  <link rel="preload" as="image" href="assets/img/banner2.png">
+
+  <!-- Schema JSON-LD: LegalService + LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["LegalService", "LocalBusiness"],
+    "name": "Muraro Gonçalves Advocacia",
+    "description": "Escritório de advocacia especializado em Direito Previdenciário, com atuação em aposentadorias, pensão por morte, auxílio-doença, BPC/LOAS e planejamento previdenciário.",
+    "url": "https://murarogoncalves.com",
+    "telephone": "+55-43-98842-7402",
+    "email": "advocacia@murarogoncalves.com",
+    "image": "https://murarogoncalves.com/assets/img/log.png",
+    "priceRange": "$$",
+    "areaServed": "Brasil",
+    "knowsAbout": ["Direito Previdenciário", "INSS", "Aposentadoria", "Pensão por Morte", "BPC LOAS"],
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Rua dos Expedicionários, nº 1525",
+        "addressLocality": "Siqueira Campos",
+        "addressRegion": "PR",
+        "postalCode": "84940-000",
+        "addressCountry": "BR"
+      }
+    ],
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -23.797136,
+      "longitude": -49.829879
+    },
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61579766468776",
+      "https://www.instagram.com/murarogonc.adv"
+    ],
+    "employee": {
+      "@type": "Person",
+      "name": "Isabelle Muraro Gonçalves",
+      "jobTitle": "Advogada Especialista em Direito Previdenciário",
+      "sameAs": "https://www.instagram.com/murarogonc.adv"
+    }
+  }
+  </script>
 
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -22,6 +66,80 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* Botao flutuante WhatsApp - apenas mobile */
+    .whatsapp-float {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      .whatsapp-float {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 80px;
+        right: 18px;
+        width: 56px;
+        height: 56px;
+        background-color: #25D366;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 30px;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 9999;
+        animation: whatsapp-pulse 2s infinite;
+      }
+      .whatsapp-float:hover {
+        color: #fff;
+        transform: scale(1.1);
+      }
+      @keyframes whatsapp-pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+        70%  { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+        100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+      }
+
+      /* CTA mobile no hero */
+      .hero-mobile-cta {
+        margin-top: 16px;
+        padding: 0 16px 24px;
+        text-align: center;
+      }
+      .hero-mobile-cta .hero-tagline {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.4;
+        margin-bottom: 6px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      }
+      .hero-mobile-cta .hero-sub {
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 18px;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      }
+      .hero-mobile-cta .btn-whatsapp-hero {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #25D366;
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 700;
+        padding: 14px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        animation: whatsapp-pulse 2s infinite;
+      }
+      .hero-mobile-cta .btn-whatsapp-hero i {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
 </head>
 
 <body class="index-page">
@@ -54,6 +172,8 @@
 
 <section id="hero" class="hero section dark-background">
 
+  <h1 class="visually-hidden">Advocacia Previdenciária em Siqueira Campos e Quatiguá/PR — Muraro Gonçalves</h1>
+
   <img src="assets/img/banner2.png" alt="Advogado previdenciário ajudando um cliente" data-aos="fade-in">
 
   <div class="container">
@@ -61,8 +181,19 @@
 <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
   <div class="col-xl-9 col-lg-10">
     <img src="assets/img/log.png" alt="Logo Muraro Gonçalves Advocacia" class="img-fluid" style="max-width: 500px; height: auto; display: block; margin-left: auto; margin-right: auto; margin-bottom: 10px;">
-    <p style="margin-bottom: 200px;"></p>
-    <p style="margin-bottom: 200px;"></p>
+
+    <!-- CTA visível apenas no celular -->
+    <div class="hero-mobile-cta d-block d-md-none">
+      <p class="hero-tagline">Seu benefício foi negado pelo INSS?</p>
+      <p class="hero-sub">Somos especialistas em Direito Previdenciário em Siqueira Campos e Quatiguá/PR</p>
+      <a href="https://wa.me/5543988427402?text=Ol%C3%A1%2C%20vim%20pelo%20Google%20e%20preciso%20de%20ajuda%20com%20meu%20benef%C3%ADcio." class="btn-whatsapp-hero" target="_blank">
+        <i class="bi bi-whatsapp"></i> Fale com a Advogada
+      </a>
+    </div>
+
+    <!-- Espaçamento desktop (restaurado) -->
+    <p class="d-none d-md-block" style="margin-bottom: 200px;"></p>
+    <p class="d-none d-md-block" style="margin-bottom: 200px;"></p>
 
   </div>
     </div>
@@ -546,7 +677,6 @@
             <img src="assets/img/Isabele_Corporativo_KauanyMendonca_2025-6.jpg" class="img-fluid" alt="Isabelle Muraro Gonçalves">
             <div class="social">
               <a href="https://wa.me/5543999292559"><i class="bi bi-whatsapp"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
             </div>
           </div>
           <div class="member-info">
@@ -627,7 +757,7 @@
 
       <div class="col-lg-4" data-aos="fade-up" data-aos-delay="700">
         <h4 class="mb-3 text-center">Localização Quatiguá</h4>
-        <iframe src="http://googleusercontent.com/maps.google.com/4" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.6!2d-49.9077!3d-23.8413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c1a1b1b1b1b1b1%3A0x0!2sR.+Jo%C3%A3o+Sboli%2C+121+-+Centro%2C+Quatiguá+-+PR!5e0!3m2!1spt-BR!2sbr" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 
     </div>
@@ -651,10 +781,8 @@
             <p><strong>Email:</strong> <span>advocacia@murarogoncalves.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
             <a href="https://www.facebook.com/profile.php?id=61579766468776"><i class="bi bi-facebook"></i></a>
             <a href="https://www.instagram.com/murarogonc.adv"><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
 
@@ -709,6 +837,11 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Botao flutuante WhatsApp (somente celular) -->
+  <a href="https://wa.me/5543988427402" class="whatsapp-float" target="_blank" aria-label="Fale conosco pelo WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+  </a>
 
 </body>
 
