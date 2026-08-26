@@ -140,13 +140,13 @@ tools/build-templates.py — regera assets/docs/templates/ a partir de modelos/
 O relatório do CJ tem este formato:
 ```
 Nome
-José Bernardo da Silva
+Fulano de Tal
 CPF
-440.858.009-06
+000.000.000-00
 Nacionalidade
 brasileiro
 Estado civil
-Viúvo(a)
+Casado(a)
 ...
 ```
 
@@ -155,8 +155,8 @@ Na verdade o PDF é uma **tabela de duas colunas**: o rótulo fica em `x≈49` e
 Por isso `reconstruirLinhas()` reagrupa os fragmentos pela coordenada Y (`item.transform[5]`, tolerância de 3pt), ordena cada grupo por X e insere espaço só onde existe vão horizontal real. O resultado é uma linha por linha visual:
 
 ```
-Nome José Bernardo da Silva
-CPF 440.858.009-06
+Nome Fulano de Tal
+CPF 000.000.000-00
 Nacionalidade brasileiro
 ```
 
