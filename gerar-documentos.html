@@ -335,26 +335,40 @@
     }
 
     function extrairDadosCJ(texto) {
-      const get = (label) => {
-        const regex = new RegExp(label + '\\s+([^\\n]+?)(?=\\s+(?:Nome|CPF|Nacionalidade|Estado|Profiss|Telefone|Endere|Celular|Gerado|©)|$)', 'i');
-        const match = texto.match(regex);
-        return match ? match[1].trim() : '';
-      };
+      // Normaliza o texto do PDF.js (pode vir com \n ou espaços entre label e valor)
+      const linhas = texto.split('\n').map(l => l.trim()).filter(l => l);
 
-      // Endereço: formato "Rua X, 123 | Bairro | Cidade - UF | CEP"
-      const enderecoMatch = texto.match(/Endere[çc]o\s+(.+?)\s+(?:Gerado|©)/i);
-      let endereco = enderecoMatch ? enderecoMatch[1].trim() : '';
-      // Converter pipes para vírgulas
-      endereco = endereco.replace(/\s*\|\s*/g, ', ').trim();
+      const campos = {};
+      const labels = ['Nome', 'CPF', 'Nacionalidade', 'Estado civil', 'Profissão', 'Telefone', 'Endereço'];
+
+      for (let i = 0; i < linhas.length; i++) {
+        for (const label of labels) {
+          // Formato "Label" na linha i e valor na linha i+1
+          if (linhas[i] === label && i + 1 < linhas.length) {
+            campos[label] = linhas[i + 1];
+            break;
+          }
+          // Formato "Label Valor" na mesma linha
+          if (linhas[i].startsWith(label + ' ') || linhas[i].startsWith(label + '\t')) {
+            campos[label] = linhas[i].slice(label.length).trim();
+            break;
+          }
+        }
+      }
+
+      // Endereço: converter pipes para formato legível
+      if (campos['Endereço']) {
+        campos['Endereço'] = campos['Endereço'].split('|').map(p => p.trim()).join(', ');
+      }
 
       return {
-        'Nome':        get('Nome'),
-        'CPF':         get('CPF'),
-        'Nacionalidade': get('Nacionalidade'),
-        'Estado civil': get('Estado civil'),
-        'Profissão':   get('Profiss[aã]o'),
-        'Telefone':    get('Telefone'),
-        'Endereço':    endereco,
+        'Nome':          campos['Nome'] || '',
+        'CPF':           campos['CPF'] || '',
+        'Nacionalidade': campos['Nacionalidade'] || '',
+        'Estado civil':  campos['Estado civil'] || '',
+        'Profissão':     campos['Profissão'] || '',
+        'Telefone':      campos['Telefone'] || '',
+        'Endereço':      campos['Endereço'] || '',
       };
     }
 
