@@ -303,6 +303,10 @@
         <li><i class="bi bi-file-earmark-word"></i>3. Termo de Renúncia</li>
         <li><i class="bi bi-file-earmark-word"></i>4. Termo de Representação e Autorização</li>
         <li><i class="bi bi-file-earmark-word"></i>5. Contrato de Honorários</li>
+        <li><i class="bi bi-file-earmark-pdf"></i><strong>Converter para PDF</strong> — se precisar dos documentos em PDF:
+          <strong>extraia o ZIP primeiro</strong> (botão direito no arquivo baixado → "Extrair tudo"),
+          abra a pasta e dê dois cliques neste arquivo. Ele usa o Word do seu computador,
+          então o PDF sai idêntico, e nada é enviado para a internet.</li>
       </ul>
 
       <button class="btn btn-gerar" id="btnGerar" onclick="gerarDocumentos()">
@@ -586,6 +590,13 @@
           zip.file(modelo.saida, preencherModelo(buffer, campos), { binary: true });
         }
 
+        // Vai junto o conversor para PDF: usa o Word do próprio computador, então
+        // o PDF sai idêntico ao .docx e nenhum dado do cliente sai da máquina.
+        for (const script of CONVERSOR_PDF) {
+          const resp = await fetch(script);
+          if (resp.ok) zip.file(script.split('/').pop(), await resp.text());
+        }
+
         const blob = await zip.generateAsync({ type: 'blob' });
         const url  = URL.createObjectURL(blob);
         const a    = document.createElement('a');
@@ -627,6 +638,15 @@
       { template: 'assets/docs/templates/3-renuncia.docx',      saida: '3_Termo_Renuncia.docx' },
       { template: 'assets/docs/templates/4-representacao.docx', saida: '4_Termo_Representacao_Autorizacao.docx' },
       { template: 'assets/docs/templates/5-contrato.docx',      saida: '5_Contrato_Honorarios.docx' },
+    ];
+
+    // Conversor para PDF, entregue junto com os documentos. Não existe biblioteca
+    // JavaScript que converta .docx em PDF sem perder cabeçalho, rodapé e fontes —
+    // e um servidor de conversão significaria mandar CPF e endereço do cliente
+    // para fora da máquina. Este script usa o Word que já está instalado.
+    const CONVERSOR_PDF = [
+      'assets/docs/pdf/Converter para PDF.bat',
+      'assets/docs/pdf/converter-pdf.ps1',
     ];
 
     async function baixarTemplate(url) {
