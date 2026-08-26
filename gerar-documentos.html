@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Gerar Documentos | Muraro Gonçalves Advocacia</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600&family=Raleway:wght@600;700&display=swap" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- docxtemplater + dependências (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PizZip/3.1.4/pizzip.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PizZip/3.1.4/pizzip-utils.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.47.5/docxtemplater.js"></script>
+  <!-- PDF.js para ler o relatório do CJ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs" type="module" id="pdfjs-script"></script>
+  <!-- JSZip para empacotar os docs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <style>
+    :root {
+      --accent-color: #AB545C;
+      --heading-color: #151515;
+      --default-color: #444444;
+    }
+
+    body { font-family: "Roboto", sans-serif; background: #f9f9f9; }
+
+    .page-header {
+      background: linear-gradient(135deg, #151515 0%, #2a2727 100%);
+      padding: 80px 0 40px;
+      margin-bottom: 40px;
+    }
+    .page-header h1 { font-family: "Raleway", sans-serif; color: #fff; font-weight: 700; }
+    .page-header p { color: rgba(255,255,255,0.7); }
+
+    .card-doc {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      padding: 32px;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-family: "Raleway", sans-serif;
+      font-weight: 700;
+      color: var(--heading-color);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #AB545C;
+    }
+
+    .form-label { font-weight: 500; color: var(--heading-color); font-size: 0.9rem; }
+    .form-control:focus { border-color: #AB545C; box-shadow: 0 0 0 0.2rem rgba(171,84,92,0.15); }
+
+    .upload-area {
+      border: 2px dashed #AB545C;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: rgba(171,84,92,0.03);
+    }
+    .upload-area:hover { background: rgba(171,84,92,0.08); }
+    .upload-area i { font-size: 2.5rem; color: #AB545C; display: block; margin-bottom: 12px; }
+    .upload-area p { color: #666; margin: 0; }
+    .upload-area.dragover { background: rgba(171,84,92,0.12); border-style: solid; }
+
+    .dados-extraidos {
+      background: #f0faf0;
+      border: 1px solid #b2dfb2;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+    }
+    .dados-extraidos .badge-ok { background: #4caf50; color: #fff; font-size: 0.75rem; padding: 3px 8px; border-radius: 20px; }
+
+    .tipo-beneficio label { font-weight: 400; font-size: 0.9rem; }
+    .tipo-beneficio .form-check { padding: 6px 0; }
+
+    .btn-gerar {
+      background: linear-gradient(135deg, #AB545C 0%, #8a3d44 100%);
+      border: none;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      padding: 14px 40px;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    .btn-gerar:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(171,84,92,0.4); color: #fff; }
+    .btn-gerar:disabled { opacity: 0.6; transform: none; }
+
+    .status-msg {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.92rem;
+    }
+    .status-success { background: #e8f5e9; border: 1px solid #a5d6a7; color: #2e7d32; }
+    .status-error   { background: #ffebee; border: 1px solid #ef9a9a; color: #c62828; }
+    .status-loading { background: #e3f2fd; border: 1px solid #90caf9; color: #1565c0; }
+
+    .doc-list li { padding: 6px 0; color: #555; font-size: 0.9rem; }
+    .doc-list li i { color: #AB545C; margin-right: 8px; }
+
+    /* header override */
+    .header { background: rgba(21,21,21,0.97) !important; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <h1 class="sitename"></h1>
+      </a>
+      <a class="btn-getstarted" href="https://wa.me/5543988427402">Agende sua Consulta</a>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container text-center">
+      <h1><i class="bi bi-file-earmark-text me-3"></i>Gerador de Documentos</h1>
+      <p>Importe o relatório do cliente do Cálculo Jurídico e gere os 5 documentos automaticamente</p>
+    </div>
+  </section>
+
+  <main class="container pb-5" style="max-width: 800px;">
+
+    <!-- PASSO 1: Importar PDF -->
+    <div class="card-doc">
+      <div class="section-title"><i class="bi bi-upload me-2"></i>Passo 1 — Importar relatório do CJ</div>
+
+      <div class="upload-area" id="uploadArea" onclick="document.getElementById('pdfInput').click()">
+        <i class="bi bi-cloud-upload"></i>
+        <p><strong>Clique aqui</strong> ou arraste o PDF do relatório do contato</p>
+        <p style="font-size:0.82rem; color:#999; margin-top:6px;">Exportado pelo Cálculo Jurídico em: Contatos → perfil do cliente → Gerar Relatório</p>
+        <input type="file" id="pdfInput" accept=".pdf" style="display:none">
+      </div>
+
+      <div class="dados-extraidos" id="dadosExtraidos">
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-check-circle-fill text-success me-2"></i>
+          <strong>Dados extraídos com sucesso!</strong>
+          <span class="badge-ok ms-2">PDF lido</span>
+        </div>
+        <div id="resumoDados" class="text-muted" style="font-size:0.88rem;"></div>
+      </div>
+    </div>
+
+    <!-- PASSO 2: Dados do cliente -->
+    <div class="card-doc">
+      <div class="section-title"><i class="bi bi-person me-2"></i>Passo 2 — Dados do cliente</div>
+      <p class="text-muted mb-3" style="font-size:0.88rem;">Campos preenchidos automaticamente pelo PDF. Confira e ajuste se necessário.</p>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Nome completo *</label>
+          <input type="text" class="form-control" id="nome" placeholder="Nome do cliente">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">CPF *</label>
+          <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Celular *</label>
+          <input type="text" class="form-control" id="celular" placeholder="(00) 00000-0000">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Nacionalidade *</label>
+          <input type="text" class="form-control" id="nacionalidade" value="Brasileiro(a)">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Estado civil *</label>
+          <select class="form-control" id="estadoCivil">
+            <option value="">Selecione...</option>
+            <option>Solteiro(a)</option>
+            <option>Casado(a)</option>
+            <option>Viúvo(a)</option>
+            <option>Divorciado(a)</option>
+            <option>Separado(a)</option>
+            <option>União estável</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Profissão *</label>
+          <input type="text" class="form-control" id="profissao" placeholder="Ex: Aposentado">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Endereço completo *</label>
+          <input type="text" class="form-control" id="endereco" placeholder="Rua, nº, bairro, cidade/UF">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Data do atendimento *</label>
+          <input type="date" class="form-control" id="dataAtendimento">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Local</label>
+          <input type="text" class="form-control" id="local" value="Siqueira Campos/PR">
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 3: Tipo de benefício -->
+    <div class="card-doc">
+      <div class="section-title"><i class="bi bi-check2-square me-2"></i>Passo 3 — Tipo de benefício (Termo de Representação)</div>
+      <div class="row tipo-beneficio">
+        <div class="col-md-6">
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b1"><label class="form-check-label" for="b1">Aposentadoria por idade</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b1u"><label class="form-check-label" for="b1u">Urbana</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b1r"><label class="form-check-label" for="b1r">Rural</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b2"><label class="form-check-label" for="b2">Aposentadoria por tempo de contribuição</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b3"><label class="form-check-label" for="b3">Aposentadoria especial</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b4"><label class="form-check-label" for="b4">Benefício por incapacidade</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b4t"><label class="form-check-label" for="b4t">Temporária</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b4p"><label class="form-check-label" for="b4p">Permanente</label></div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b5"><label class="form-check-label" for="b5">Auxílio-acidente</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b6"><label class="form-check-label" for="b6">Pensão por morte urbana ou rural</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b7"><label class="form-check-label" for="b7">Benefício prestação continuada</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b7i"><label class="form-check-label" for="b7i">Idoso</label></div>
+          <div class="form-check ms-3"><input class="form-check-input" type="checkbox" id="b7p"><label class="form-check-label" for="b7p">PCD</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b8"><label class="form-check-label" for="b8">Atualização de dados cadastrais</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b9"><label class="form-check-input" type="checkbox" id="b9"><label class="form-check-label" for="b9">Salário maternidade</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b10"><label class="form-check-label" for="b10">Requerimento de acerto de CNIS</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b11"><label class="form-check-label" for="b11">Acréscimo de 25%</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b12"><label class="form-check-label" for="b12">Requerimentos em geral</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GERAR -->
+    <div class="card-doc">
+      <div class="section-title"><i class="bi bi-download me-2"></i>Gerar documentos</div>
+      <p class="text-muted mb-3" style="font-size:0.88rem;">Serão gerados os seguintes arquivos em formato Word (.docx):</p>
+      <ul class="doc-list list-unstyled mb-4">
+        <li><i class="bi bi-file-earmark-word"></i>1. Procuração Judicial</li>
+        <li><i class="bi bi-file-earmark-word"></i>2. Declaração de Hipossuficiência</li>
+        <li><i class="bi bi-file-earmark-word"></i>3. Termo de Renúncia</li>
+        <li><i class="bi bi-file-earmark-word"></i>4. Termo de Representação e Autorização</li>
+        <li><i class="bi bi-file-earmark-word"></i>5. Contrato de Honorários</li>
+      </ul>
+
+      <button class="btn btn-gerar" id="btnGerar" onclick="gerarDocumentos()">
+        <i class="bi bi-download me-2"></i>Gerar e baixar ZIP com os 5 documentos
+      </button>
+
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer" class="footer dark-background">
+    <div class="container text-center py-4">
+      <p style="color:rgba(255,255,255,0.5); margin:0; font-size:0.85rem;">
+        © 2026 Muraro Gonçalves Advocacia — Uso interno
+      </p>
+    </div>
+  </footer>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    // PDF.js
+    const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+    window.pdfjsLib = pdfjsLib;
+
+    // Preenche data de hoje
+    document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
+
+    // Upload área
+    const uploadArea = document.getElementById('uploadArea');
+    const pdfInput  = document.getElementById('pdfInput');
+
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') processarPDF(file);
+    });
+    pdfInput.addEventListener('change', e => {
+      if (e.target.files[0]) processarPDF(e.target.files[0]);
+    });
+
+    async function processarPDF(file) {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let texto = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          texto += content.items.map(item => item.str).join(' ') + '\n';
+        }
+
+        // Extrair campos
+        const dados = extrairDadosCJ(texto);
+        preencherFormulario(dados);
+
+        // Mostrar resumo
+        const resumo = Object.entries(dados)
+          .filter(([k,v]) => v)
+          .map(([k,v]) => `<strong>${k}:</strong> ${v}`)
+          .join(' &nbsp;|&nbsp; ');
+        document.getElementById('resumoDados').innerHTML = resumo;
+        document.getElementById('dadosExtraidos').style.display = 'block';
+
+      } catch(err) {
+        alert('Erro ao ler o PDF. Verifique se é o relatório correto do Cálculo Jurídico.');
+        console.error(err);
+      }
+    }
+
+    function extrairDadosCJ(texto) {
+      const get = (label) => {
+        const regex = new RegExp(label + '\\s+([^\\n]+?)(?=\\s+(?:Nome|CPF|Nacionalidade|Estado|Profiss|Telefone|Endere|Celular|Gerado|©)|$)', 'i');
+        const match = texto.match(regex);
+        return match ? match[1].trim() : '';
+      };
+
+      // Endereço: formato "Rua X, 123 | Bairro | Cidade - UF | CEP"
+      const enderecoMatch = texto.match(/Endere[çc]o\s+(.+?)\s+(?:Gerado|©)/i);
+      let endereco = enderecoMatch ? enderecoMatch[1].trim() : '';
+      // Converter pipes para vírgulas
+      endereco = endereco.replace(/\s*\|\s*/g, ', ').trim();
+
+      return {
+        'Nome':        get('Nome'),
+        'CPF':         get('CPF'),
+        'Nacionalidade': get('Nacionalidade'),
+        'Estado civil': get('Estado civil'),
+        'Profissão':   get('Profiss[aã]o'),
+        'Telefone':    get('Telefone'),
+        'Endereço':    endereco,
+      };
+    }
+
+    function preencherFormulario(dados) {
+      if (dados['Nome'])          document.getElementById('nome').value = dados['Nome'];
+      if (dados['CPF'])           document.getElementById('cpf').value = dados['CPF'];
+      if (dados['Telefone'])      document.getElementById('celular').value = dados['Telefone'];
+      if (dados['Profissão'])     document.getElementById('profissao').value = dados['Profissão'];
+      if (dados['Endereço'])      document.getElementById('endereco').value = dados['Endereço'];
+      if (dados['Nacionalidade']) document.getElementById('nacionalidade').value = dados['Nacionalidade'];
+
+      // Estado civil — tentar match no select
+      const estadoCivil = dados['Estado civil'];
+      if (estadoCivil) {
+        const select = document.getElementById('estadoCivil');
+        for (const opt of select.options) {
+          if (opt.value.toLowerCase().includes(estadoCivil.toLowerCase().replace(/\(.*\)/,'').trim())) {
+            select.value = opt.value;
+            break;
+          }
+        }
+        if (!select.value) {
+          // adiciona opção custom
+          const opt = new Option(estadoCivil, estadoCivil, true, true);
+          select.add(opt);
+        }
+      }
+    }
+
+    // Benefícios selecionados
+    function getBeneficios() {
+      const checks = {
+        b1: 'Aposentadoria por idade', b1u: 'urbana', b1r: 'rural',
+        b2: 'Aposentadoria por tempo de contribuição', b3: 'Aposentadoria especial',
+        b4: 'Benefício por incapacidade', b4t: 'temporária', b4p: 'permanente',
+        b5: 'Auxílio-acidente', b6: 'Pensão por morte urbana ou rural',
+        b7: 'Benefício prestação continuada', b7i: 'idoso', b7p: 'PCD',
+        b8: 'Atualização de dados cadastrais', b9: 'Salário maternidade',
+        b10: 'Requerimento de acerto de CNIS', b11: 'Acréscimo de 25%',
+        b12: 'Requerimentos em geral',
+      };
+      return Object.entries(checks)
+        .filter(([id]) => document.getElementById(id)?.checked)
+        .map(([,label]) => label)
+        .join(', ');
+    }
+
+    // Formatar data
+    function formatarData(isoDate) {
+      if (!isoDate) return '';
+      const [y,m,d] = isoDate.split('-');
+      const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+      return `${parseInt(d)} de ${meses[parseInt(m)-1]} de ${y}`;
+    }
+
+    window.gerarDocumentos = async function() {
+      const campos = {
+        nome:         document.getElementById('nome').value.trim(),
+        cpf:          document.getElementById('cpf').value.trim(),
+        celular:      document.getElementById('celular').value.trim(),
+        nacionalidade:document.getElementById('nacionalidade').value.trim(),
+        estado_civil: document.getElementById('estadoCivil').value,
+        profissao:    document.getElementById('profissao').value.trim(),
+        endereco:     document.getElementById('endereco').value.trim(),
+        data:         formatarData(document.getElementById('dataAtendimento').value),
+        local:        document.getElementById('local').value.trim(),
+        beneficios:   getBeneficios(),
+      };
+
+      // Validação básica
+      const obrigatorios = ['nome','cpf','celular','estado_civil','profissao','endereco'];
+      const faltando = obrigatorios.filter(k => !campos[k]);
+      if (faltando.length) {
+        mostrarStatus('error', 'Preencha todos os campos obrigatórios antes de gerar.');
+        return;
+      }
+
+      mostrarStatus('loading', '<i class="bi bi-hourglass-split me-2"></i>Gerando documentos...');
+      document.getElementById('btnGerar').disabled = true;
+
+      try {
+        // Gerar os 5 docs
+        const zip = new JSZip();
+        const docs = [
+          { nome: '1_Procuracao_Judicial.docx',                template: gerarProcuracao(campos) },
+          { nome: '2_Declaracao_Hipossuficiencia.docx',        template: gerarDeclaracao(campos) },
+          { nome: '3_Termo_Renuncia.docx',                     template: gerarRenuncia(campos) },
+          { nome: '4_Termo_Representacao_Autorizacao.docx',    template: gerarRepresentacao(campos) },
+          { nome: '5_Contrato_Honorarios.docx',                template: gerarContrato(campos) },
+        ];
+
+        for (const doc of docs) {
+          zip.file(doc.nome, doc.template, { binary: true });
+        }
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `documentos_${campos.nome.split(' ')[0]}_${new Date().toISOString().slice(0,10)}.zip`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        mostrarStatus('success', `<i class="bi bi-check-circle me-2"></i>5 documentos gerados com sucesso para <strong>${campos.nome}</strong>!`);
+      } catch(err) {
+        console.error(err);
+        mostrarStatus('error', 'Erro ao gerar documentos. Verifique o console para detalhes.');
+      } finally {
+        document.getElementById('btnGerar').disabled = false;
+      }
+    };
+
+    function mostrarStatus(tipo, msg) {
+      const el = document.getElementById('statusMsg');
+      el.className = `status-msg status-${tipo}`;
+      el.innerHTML = msg;
+      el.style.display = 'block';
+    }
+
+    // ─── GERADORES DE DOCX ───────────────────────────────────────────────────
+    // Cria um .docx simples com python-docx via blob (XML direto)
+
+    function criarDocx(titulo, secoes) {
+      // Template XML mínimo de um .docx
+      const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:style w:type="paragraph" w:styleId="Normal" w:default="1">
+    <w:pPr><w:spacing w:line="360" w:lineRule="auto"/></w:pPr>
+    <w:rPr><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr>
+  </w:style>
+</w:styles>`;
+
+      const linhas = secoes.map(s => {
+        if (s.tipo === 'titulo') {
+          return `<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="200"/></w:pPr>
+            <w:r><w:rPr><w:b/><w:sz w:val="28"/></w:rPr><w:t>${esc(s.texto)}</w:t></w:r></w:p>`;
+        }
+        if (s.tipo === 'subtitulo') {
+          return `<w:p><w:pPr><w:spacing w:before="200" w:after="100"/></w:pPr>
+            <w:r><w:rPr><w:b/><w:sz w:val="24"/></w:rPr><w:t>${esc(s.texto)}</w:t></w:r></w:p>`;
+        }
+        if (s.tipo === 'tabela') {
+          const rows = s.linhas.map(row =>
+            `<w:tr>${row.map(cell =>
+              `<w:tc><w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr>
+              <w:p><w:r><w:rPr><w:sz w:val="22"/>${cell.negrito?'<w:b/>':''}</w:rPr>
+              <w:t xml:space="preserve">${esc(cell.texto)}</w:t></w:r></w:p></w:tc>`
+            ).join('')}</w:tr>`
+          ).join('');
+          return `<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/>
+            <w:tblW w:w="9360" w:type="dxa"/>
+            <w:tblBorders>
+              <w:top w:val="single" w:sz="4"/><w:left w:val="single" w:sz="4"/>
+              <w:bottom w:val="single" w:sz="4"/><w:right w:val="single" w:sz="4"/>
+              <w:insideH w:val="single" w:sz="4"/><w:insideV w:val="single" w:sz="4"/>
+            </w:tblBorders></w:tblPr>${rows}</w:tbl>`;
+        }
+        if (s.tipo === 'assinatura') {
+          return `<w:p><w:pPr><w:spacing w:before="600"/></w:pPr>
+            <w:r><w:rPr><w:sz w:val="22"/></w:rPr><w:t>${esc(s.texto)}</w:t></w:r></w:p>`;
+        }
+        if (s.tipo === 'espaco') {
+          return `<w:p><w:r><w:t></w:t></w:r></w:p>`;
+        }
+        // paragrafo normal
+        const alinhamento = s.centro ? '<w:jc w:val="center"/>' : '';
+        const negrito = s.negrito ? '<w:b/>' : '';
+        return `<w:p><w:pPr>${alinhamento}<w:spacing w:after="120"/></w:pPr>
+          <w:r><w:rPr><w:sz w:val="22"/>${negrito}</w:rPr>
+          <w:t xml:space="preserve">${esc(s.texto)}</w:t></w:r></w:p>`;
+      }).join('\n');
+
+      const document = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
+  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+  xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
+  xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
+  xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+  xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+  mc:Ignorable="w14 w15 w16cex"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <w:body>
+    <w:sectPr>
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1800"/>
+    </w:sectPr>
+    ${linhas}
+  </w:body>
+</w:document>`;
+
+      const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+      const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>`;
+
+      const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+
+      const zip = new JSZip();
+      zip.file('[Content_Types].xml', contentTypes);
+      zip.file('_rels/.rels', rootRels);
+      zip.file('word/document.xml', document);
+      zip.file('word/styles.xml', styles);
+      zip.file('word/_rels/document.xml.rels', rels);
+
+      return zip.generateAsync({ type: 'arraybuffer' });
+    }
+
+    function esc(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function tabelaCliente(c) {
+      return {
+        tipo: 'tabela',
+        linhas: [
+          [{texto:'Nome:', negrito:true}, {texto:c.nome, negrito:false}, {texto:c.nome}, {texto:c.nome}, {texto:c.nome}],
+          [{texto:'Nacionalidade:', negrito:true},{texto:'Estado civil:', negrito:true},{texto:'Profissão:', negrito:true},{texto:'CPF:', negrito:true},{texto:'Celular:', negrito:true}],
+          [{texto:c.nacionalidade},{texto:c.estado_civil},{texto:c.profissao},{texto:c.cpf},{texto:c.celular}],
+          [{texto:'Endereço:', negrito:true},{texto:c.endereco},{texto:c.endereco},{texto:c.endereco},{texto:c.endereco}],
+        ]
+      };
+    }
+
+    function tabelaAdvogada() {
+      return {
+        tipo: 'tabela',
+        linhas: [
+          [{texto:'Nome:', negrito:true},{texto:'Isabelle Muraro Gonçalves'},{texto:'Isabelle Muraro Gonçalves'},{texto:'advocacia@murarogoncalves.com'},{texto:'advocacia@murarogoncalves.com'}],
+          [{texto:'Nacionalidade:', negrito:true},{texto:'Estado civil:', negrito:true},{texto:'Profissão:', negrito:true},{texto:'OAB/UF', negrito:true},{texto:'Celular:', negrito:true}],
+          [{texto:'Brasileiro(a)'},{texto:'casada'},{texto:'advogada'},{texto:'82.313/PR'},{texto:'(43)98842-7402'}],
+          [{texto:'Nome:', negrito:true},{texto:'Isabelle Muraro Gonçalves Sociedade Individual de Advocacia'},{texto:'Isabelle Muraro Gonçalves Sociedade Individual de Advocacia'},{texto:'Isabelle Muraro Gonçalves Sociedade Individual de Advocacia'},{texto:'Isabelle Muraro Gonçalves Sociedade Individual de Advocacia'}],
+          [{texto:'CNPJ:', negrito:true},{texto:'62.918.199/0001-99'},{texto:'62.918.199/0001-99'},{texto:'OAB/UF', negrito:true},{texto:'21.556/PR'}],
+          [{texto:'Endereço:', negrito:true},{texto:'Rua dos Expedicionários, nº 1.525, centro, Siqueira Campos/PR  |  Rua João Sboli, nº 121, centro, Quatiguá/PR'},{texto:''},{texto:''},{texto:''}],
+        ]
+      };
+    }
+
+    async function gerarProcuracao(c) {
+      return criarDocx('Procuração', [
+        {tipo:'titulo', texto:'PROCURAÇÃO'},
+        {tipo:'subtitulo', texto:'OUTORGANTE'},
+        {tipo:'espaco'},
+        tabelaCliente(c),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'OUTORGADO(A/S)'},
+        {tipo:'espaco'},
+        tabelaAdvogada(),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'PODERES'},
+        {tipo:'paragrafo', texto:'O(a) outorgante confere à outorgada todos os poderes para o foro em geral, inclusive os da cláusula "AD JUDICIA" e "ET EXTRA" para propor ação judicial, defendê-lo(a) na que lhe for proposta, promover quaisquer medidas preliminares, preventivas ou assecuratórias dos seus direitos e interesses, em qualquer instância ou Tribunal, receber notificações dos extrajudiciais ou judiciais em geral, fazer acordo, firmar compromisso, dar e receber quitação, interpor recursos em qualquer grau de jurisdição, prestar outras declarações de praxe, como autodeclaração rural e declaração de isenção de imposto de renda e representar o(a) outorgante perante quaisquer repartições públicas.'},
+        {tipo:'paragrafo', texto:'Poderes do art. 113 e seguintes do Código de Normas Nacional (prov. 149), em especial dos arts. 113, 114 e 116.'},
+        {tipo:'paragrafo', texto:'Confere também os poderes previstos no art. 105 do CPC, para: receber citação, confessar, reconhecer a procedência do pedido, transigir, desistir, renunciar ao direito sobre o qual se funda a ação, receber, dar quitação, firmar compromisso e assinar declaração de hipossuficiência econômica. A presente procuração pode ser substabelecida.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:`${c.local}, ${c.data}.`, centro:true},
+        {tipo:'espaco'},
+        {tipo:'assinatura', texto:'Assinatura do(a) outorgante: _____________________________________________________'},
+      ]);
+    }
+
+    async function gerarDeclaracao(c) {
+      return criarDocx('Declaração', [
+        {tipo:'titulo', texto:'DECLARAÇÃO DE HIPOSSUFICIÊNCIA'},
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'Declarante'},
+        {tipo:'espaco'},
+        tabelaCliente(c),
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'Eu, acima qualificado(a), DECLARO, nos termos do art. 98 do Código de Processo Civil, que não possuo condições financeiras suficientes para arcar com as custas processuais e honorários advocatícios sem prejuízo do meu próprio sustento e de meus familiares.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:`${c.local}, ${c.data}.`, centro:true},
+        {tipo:'espaco'},
+        {tipo:'assinatura', texto:'Assinatura do(a) declarante: _____________________________________________________'},
+      ]);
+    }
+
+    async function gerarRenuncia(c) {
+      return criarDocx('Renúncia', [
+        {tipo:'titulo', texto:'TERMO DE RENÚNCIA'},
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'Declarante'},
+        {tipo:'espaco'},
+        tabelaCliente(c),
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'Eu, acima qualificado(a), RENUNCIO, ao valor de meu crédito que exceder a 60 (sessenta) salários mínimos na data do ajuizamento da ação, procedimento necessário para o ajuizamento e prosseguimento de meu pleito perante o Juizado Especial Federal, de acordo com a Lei 10.259/2001.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:`${c.local}, ${c.data}.`, centro:true},
+        {tipo:'espaco'},
+        {tipo:'assinatura', texto:'Assinatura do(a) declarante: _____________________________________________________'},
+      ]);
+    }
+
+    async function gerarRepresentacao(c) {
+      const beneficios = c.beneficios || 'Requerimentos em geral';
+      return criarDocx('Representação', [
+        {tipo:'titulo', texto:'TERMO DE REPRESENTAÇÃO E AUTORIZAÇÃO'},
+        {tipo:'subtitulo', texto:'REPRESENTADO(A)'},
+        {tipo:'espaco'},
+        tabelaCliente(c),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'REPRESENTANTE'},
+        {tipo:'espaco'},
+        tabelaAdvogada(),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'PODERES'},
+        {tipo:'paragrafo', texto:'Confiro poderes específicos para me representar perante o INSS na solicitação do serviço ou benefício abaixo indicado e autorizo o(a) referido(a) profissional a ter acesso apenas às informações pessoais necessárias a subsidiar o requerimento eletrônico do serviço ou benefício, para:'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:beneficios, negrito:true},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'Podendo, para tanto, praticar os atos necessários ao cumprimento deste mandato, em especial, prestar informações, acompanhar requerimentos, cumprir exigências, ter vistas e tomar ciência de decisões sobre processos de requerimento de benefícios operacionalizados pelo Instituto.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:`${c.local}, ${c.data}.`, centro:true},
+        {tipo:'assinatura', texto:'Assinatura do(a) declarante: ____________________________________________________'},
+      ]);
+    }
+
+    async function gerarContrato(c) {
+      return criarDocx('Contrato', [
+        {tipo:'titulo', texto:'CONTRATO DE HONORÁRIOS ADVOCATÍCIOS'},
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'CONTRATANTE'},
+        {tipo:'espaco'},
+        tabelaCliente(c),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'CONTRATADO'},
+        {tipo:'espaco'},
+        tabelaAdvogada(),
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'OBJETO DO CONTRATO'},
+        {tipo:'paragrafo', texto:'CLÁUSULA PRIMEIRA: O Contratante contratou os serviços profissionais do Contratado para processo administrativo e/ou judicial de benefício por incapacidade.'},
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'DOS HONORÁRIOS ADVOCATÍCIOS'},
+        {tipo:'paragrafo', texto:'CLÁUSULA QUARTA: Em remuneração aos serviços prestados pelo Contratado, fica o Contratante obrigado, de forma irrevogável e irretratável, ao pagamento de honorários advocatícios de 30% (trinta por cento) sobre as parcelas vencidas e vincendas.'},
+        {tipo:'espaco'},
+        {tipo:'subtitulo', texto:'DO FORO'},
+        {tipo:'paragrafo', texto:'CLÁUSULA DÉCIMA SEGUNDA: Estipulam o Foro da comarca de Siqueira Campos/PR, para dirimir litígios decorrentes do presente contrato.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'E, por estarem assim contratados, assinam o presente contrato em duas vias de igual teor.'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:`${c.local}, ${c.data}.`, centro:true},
+        {tipo:'espaco'},
+        {tipo:'assinatura', texto:'Assinatura do(a) contratante: _____________________________________________________'},
+        {tipo:'espaco'},
+        {tipo:'assinatura', texto:'Assinatura do(a) contratado(a):____________________________________________________'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'Testemunha 1: _______________________   Nome: ______________________________   CPF: ________________________________'},
+        {tipo:'espaco'},
+        {tipo:'paragrafo', texto:'Testemunha 2: _______________________   Nome: ______________________________   CPF: ________________________________'},
+      ]);
+    }
+
+  </script>
+
+</body>
+</html>
