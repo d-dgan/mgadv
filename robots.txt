@@ -1,4 +1,31 @@
+# Buscadores e crawlers em geral.
+# Atenção: linha em branco encerra o bloco — as regras de um grupo têm que ficar
+# todas juntas, sem linha vazia no meio.
 User-agent: *
 Allow: /
+Disallow: /gerar-documentos.html
+Disallow: /assets/docs/
+
+# Crawlers de IA, liberados de propósito: o escritório quer ser encontrado e
+# citado por assistentes quando alguém pergunta sobre benefício do INSS na
+# região. Listados explicitamente pra que uma mudança futura no bloco acima não
+# os bloqueie sem querer. Um grupo só, porque as regras são as mesmas.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: meta-externalagent
+User-agent: Amazonbot
+User-agent: Bytespider
+Allow: /
+Disallow: /gerar-documentos.html
+Disallow: /assets/docs/
 
 Sitemap: https://murarogoncalves.com/sitemap.xml
