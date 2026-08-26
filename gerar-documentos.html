@@ -363,13 +363,6 @@
 
         // Extrair campos
         const dados = extrairDadosCJ(texto);
-        
-        // DEBUG — remover depois de validar
-        console.log('=== TEXTO EXTRAÍDO DO PDF ===');
-        console.log(JSON.stringify(texto));
-        console.log('=== DADOS EXTRAÍDOS ===');
-        console.log(JSON.stringify(dados));
-        
         preencherFormulario(dados);
 
         // Mostrar resumo
