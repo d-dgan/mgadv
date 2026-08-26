@@ -52,7 +52,7 @@ def texto_de(para):
     return ''.join(RE_TEXTO.findall(para))
 
 
-def trocar_texto(para, novo):
+def trocar_texto(para, novo, ajustar_ppr=None):
     """Substitui todo o texto do paragrafo por um unico run com `novo`.
 
     Preserva o <w:pPr> (alinhamento, marcador de lista, recuo) e o <w:rPr> do
@@ -64,6 +64,8 @@ def trocar_texto(para, novo):
     if not m:
         raise ValueError('paragrafo em formato inesperado: %r' % para[:120])
     abre, ppr = m.group(1), (m.group(2) or '')
+    if ajustar_ppr:
+        ppr = ajustar_ppr(ppr)
 
     rpr = ''
     for run in RE_RUN.findall(para):
@@ -147,7 +149,8 @@ def taguear_subopcoes(paras, textos):
     trocas = {}
     for alvo, novo in SUBOPCOES:
         i = indice_por_texto(textos, alvo)
-        trocas[i] = novo
+        # 720 twips deixa a sub-opcao alinhada sob o texto do item, e nao sob a caixa
+        trocas[i] = (novo, _recuar(720))
     return trocas
 
 
@@ -190,21 +193,53 @@ def inserir_honorarios_extra(xml):
     return xml[:pos] + novos + xml[pos:]
 
 
-def marcar_lista_beneficios(numbering_xml):
-    """Troca o marcador da lista de beneficios de "o" (vazio) para "X" (marcado).
+# Os 12 beneficios do Termo de Representacao, na ordem do modelo. Cada um vira
+# uma caixa "(X)" ou "(_)" no comeco da linha, no mesmo estilo que o documento ja
+# usa nas sub-opcoes (urbana/rural etc.) — assim a Isabelle marca no formulario e
+# o documento reflete a escolha.
+BENEFICIOS = [
+    ('Aposentadoria por idade',                 'm_b1'),
+    ('Aposentadoria por tempo de contribuição', 'm_b2'),
+    ('Aposentadoria especial',                  'm_b3'),
+    ('Benefício por incapacidade',              'm_b4'),
+    ('Auxílio-acidente',                        'm_b5'),
+    ('Pensão por morte urbana ou rural',        'm_b6'),
+    ('Benefício prestação continuada',          'm_b7'),
+    ('Atualização de dados cadastrais',         'm_b8'),
+    ('Salário maternidade',                     'm_b9'),
+    ('Requerimento de acerto de CNIS',          'm_b10'),
+    ('Acréscimo de 25%',                        'm_b11'),
+    ('Requerimentos em geral',                  'm_b12'),
+]
 
-    Decisao do escritorio: o Termo de Representacao sai com os 12 beneficios ja
-    marcados, dando poderes amplos perante o INSS. So as sub-opcoes (urbana /
-    rural etc.) e que variam conforme o formulario.
+RE_NUMPR = re.compile(r'<w:numPr>.*?</w:numPr>', re.S)
+RE_IND   = re.compile(r'<w:ind[^>]*/>')
+
+
+def _recuar(twips):
+    """Devolve uma funcao que troca o recuo do paragrafo.
+
+    O <w:ind> tem que entrar depois do <w:tabs> e antes do <w:rPr> — e a ordem
+    que o esquema do OOXML exige dentro do <w:pPr>. Nos paragrafos que este
+    script mexe sempre existe um <w:tabs>, entao ancoramos nele.
     """
-    novo, trocas = re.subn(
-        r'(<w:abstractNum w:abstractNumId="0"[ >].*?<w:lvl w:ilvl="0"[ >].*?)'
-        r'<w:lvlText w:val="o"/>',
-        r'\1<w:lvlText w:val="X"/>',
-        numbering_xml, count=1, flags=re.S)
-    if not trocas:
-        raise LookupError('marcador da lista de beneficios nao encontrado')
-    return novo
+    def ajustar(ppr):
+        ppr = RE_NUMPR.sub('', ppr)          # tira o marcador de lista "o"
+        ppr = RE_IND.sub('', ppr)            # e o recuo antigo, se houver
+        novo = '<w:ind w:left="%d"/>' % twips
+        if '</w:tabs>' in ppr:
+            return ppr.replace('</w:tabs>', '</w:tabs>' + novo, 1)
+        return ppr.replace('<w:pPr>', '<w:pPr>' + novo, 1)
+    return ajustar
+
+
+def taguear_beneficios(paras, textos):
+    """Troca o marcador de lista dos 12 beneficios por uma caixa (X)/(_)."""
+    trocas = {}
+    for rotulo, tag in BENEFICIOS:
+        i = indice_por_texto(textos, rotulo)
+        trocas[i] = ('({%s}) %s' % (tag, rotulo), _recuar(360))
+    return trocas
 
 
 def aplicar(xml, funcoes):
@@ -219,8 +254,10 @@ def aplicar(xml, funcoes):
     # Substitui de tras pra frente pra nao invalidar as posicoes ainda nao usadas.
     for i in sorted(trocas, reverse=True):
         antigo = paras[i]
+        novo = trocas[i]
+        texto, ajuste = novo if isinstance(novo, tuple) else (novo, None)
         pos = xml.index(antigo)
-        xml = xml[:pos] + trocar_texto(antigo, trocas[i]) + xml[pos + len(antigo):]
+        xml = xml[:pos] + trocar_texto(antigo, texto, ajuste) + xml[pos + len(antigo):]
 
     return xml, len(trocas)
 
@@ -230,6 +267,7 @@ def construir(entrada, saida):
     funcoes = [taguear_bloco_cliente, taguear_data]
     if nome.startswith('4-'):
         funcoes.append(taguear_subopcoes)
+        funcoes.append(taguear_beneficios)
     if nome.startswith('5-'):
         funcoes.append(taguear_clausula_primeira)
 
@@ -242,9 +280,6 @@ def construir(entrada, saida):
         for item in origem.infolist():
             if item.filename == 'word/document.xml':
                 destino.writestr(item, doc.encode('utf-8'))
-            elif item.filename == 'word/numbering.xml' and nome.startswith('4-'):
-                numbering = origem.read(item.filename).decode('utf-8')
-                destino.writestr(item, marcar_lista_beneficios(numbering).encode('utf-8'))
             else:
                 destino.writestr(item, origem.read(item.filename))
     origem.close()
