@@ -20,36 +20,219 @@
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/logo.png" rel="apple-touch-icon">
   <link rel="canonical" href="https://murarogoncalves.com/">
+
+  <!-- Open Graph / Twitter: controlam a prévia do link no WhatsApp, Facebook,
+       Instagram e LinkedIn. Sem elas, o link colado no WhatsApp sai sem imagem
+       e sem título, só a URL crua. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Muraro Gonçalves Advocacia Previdenciária">
+  <meta property="og:url" content="https://murarogoncalves.com/">
+  <meta property="og:title" content="Advocacia Previdenciária em Siqueira Campos e Quatiguá/PR">
+  <meta property="og:description" content="Aposentadoria, pensão por morte, auxílio-doença, BPC/LOAS e demais benefícios do INSS. Atendimento presencial em Siqueira Campos e Quatiguá, e remoto para todo o Brasil.">
+  <meta property="og:image" content="https://murarogoncalves.com/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Sala de atendimento do escritório Muraro Gonçalves Advocacia Previdenciária">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Advocacia Previdenciária em Siqueira Campos e Quatiguá/PR">
+  <meta name="twitter:description" content="Aposentadoria, pensão por morte, auxílio-doença, BPC/LOAS e demais benefícios do INSS. Atendimento presencial e remoto.">
+  <meta name="twitter:image" content="https://murarogoncalves.com/assets/img/og-image.jpg">
   <link rel="preload" as="image" href="assets/img/banner2.jpg">
 
   <!-- Schema JSON-LD: LegalService + LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": ["LegalService", "LocalBusiness"],
-    "name": "Muraro Gonçalves Advocacia",
-    "description": "Escritório de advocacia especializado em Direito Previdenciário, com atuação em aposentadorias, pensão por morte, auxílio-doença, BPC/LOAS e planejamento previdenciário.",
+    "@type": [
+      "LegalService",
+      "LocalBusiness"
+    ],
+    "@id": "https://murarogoncalves.com/#escritorio",
+    "name": "Muraro Gonçalves Advocacia Previdenciária",
+    "description": "Escritório de advocacia especializado em Direito Previdenciário, com atuação em aposentadorias, pensão por morte, auxílio-doença, BPC/LOAS e planejamento previdenciário. Matriz em Siqueira Campos/PR, filial em Quatiguá/PR e atendimento remoto para todo o Brasil.",
     "url": "https://murarogoncalves.com",
     "telephone": "+55-43-98842-7402",
     "email": "advocacia@murarogoncalves.com",
-    "image": "https://murarogoncalves.com/assets/img/log.png",
+    "image": "https://murarogoncalves.com/assets/img/og-image.jpg",
+    "logo": "https://murarogoncalves.com/assets/img/log.png",
     "priceRange": "$$",
-    "areaServed": "Brasil",
-    "knowsAbout": ["Direito Previdenciário", "INSS", "Aposentadoria", "Pensão por Morte", "BPC LOAS"],
-    "address": [
+    "currenciesAccepted": "BRL",
+    "areaServed": [
       {
-        "@type": "PostalAddress",
-        "streetAddress": "Rua dos Expedicionários, nº 1525",
-        "addressLocality": "Siqueira Campos",
+        "@type": "City",
+        "name": "Siqueira Campos",
         "addressRegion": "PR",
-        "postalCode": "84940-000",
         "addressCountry": "BR"
+      },
+      {
+        "@type": "City",
+        "name": "Quatiguá",
+        "addressRegion": "PR",
+        "addressCountry": "BR"
+      },
+      {
+        "@type": "Country",
+        "name": "Brasil"
       }
     ],
+    "knowsAbout": [
+      "Direito Previdenciário",
+      "INSS",
+      "Aposentadoria por idade",
+      "Aposentadoria rural",
+      "Aposentadoria por tempo de contribuição",
+      "Pensão por morte",
+      "Auxílio-doença",
+      "BPC LOAS",
+      "Salário-maternidade",
+      "Auxílio-reclusão",
+      "Planejamento previdenciário"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua dos Expedicionários, nº 1525 - Centro",
+      "addressLocality": "Siqueira Campos",
+      "addressRegion": "PR",
+      "postalCode": "84940-000",
+      "addressCountry": "BR"
+    },
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": -23.797136,
       "longitude": -49.829879
+    },
+    "department": [
+      {
+        "@type": [
+          "LegalService",
+          "LocalBusiness"
+        ],
+        "@id": "https://murarogoncalves.com/#filial-quatigua",
+        "name": "Muraro Gonçalves Advocacia Previdenciária — Filial Quatiguá",
+        "url": "https://murarogoncalves.com",
+        "telephone": "+55-43-98842-7402",
+        "email": "advocacia@murarogoncalves.com",
+        "parentOrganization": {
+          "@id": "https://murarogoncalves.com/#escritorio"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua João Sboli, nº 121 - Centro",
+          "addressLocality": "Quatiguá",
+          "addressRegion": "PR",
+          "postalCode": "86450-000",
+          "addressCountry": "BR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -23.5692166,
+          "longitude": -49.9113047
+        }
+      }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Serviços em Direito Previdenciário",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Aposentadorias",
+            "description": "Aposentadoria por idade urbana e rural, por tempo de contribuição e especial.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Benefícios por incapacidade",
+            "description": "Auxílio por incapacidade temporária e aposentadoria por incapacidade permanente.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Pensão por morte",
+            "description": "Pensão por morte urbana e rural para dependentes do segurado falecido.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Salário-maternidade",
+            "description": "Salário-maternidade para seguradas urbanas e rurais.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Auxílio-reclusão",
+            "description": "Auxílio-reclusão para dependentes de segurado de baixa renda recolhido à prisão.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Benefício de Prestação Continuada (BPC/LOAS)",
+            "description": "BPC/LOAS para idosos a partir de 65 anos e para pessoas com deficiência.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Planejamento previdenciário",
+            "description": "Análise do CNIS e simulação do melhor momento e da melhor regra para se aposentar.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Regime Próprio de Previdência",
+            "description": "Benefícios previdenciários de servidores públicos vinculados a regime próprio.",
+            "serviceType": "Direito Previdenciário",
+            "provider": {
+              "@id": "https://murarogoncalves.com/#escritorio"
+            }
+          }
+        }
+      ]
     },
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61579766468776",
@@ -59,14 +242,126 @@
       "@type": "Person",
       "name": "Isabelle Muraro Gonçalves",
       "jobTitle": "Advogada Especialista em Direito Previdenciário",
+      "worksFor": {
+        "@id": "https://murarogoncalves.com/#escritorio"
+      },
       "sameAs": "https://www.instagram.com/murarogonc.adv"
     }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://murarogoncalves.com/#faq",
+    "isPartOf": {
+      "@id": "https://murarogoncalves.com/#escritorio"
+    },
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Preciso de advogado para pedir um benefício no INSS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não é obrigatório: qualquer segurado pode dar entrada sozinho pelo Meu INSS. O advogado ajuda a reunir a documentação certa antes do pedido, o que costuma evitar exigências e indeferimentos, e passa a ser indispensável quando o caso precisa ir para a Justiça."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O INSS negou meu pedido. Ainda dá para conseguir o benefício?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Na maioria das vezes, sim. Cabe recurso administrativo dentro do prazo indicado na carta de indeferimento e, esgotada essa via, o direito pode ser discutido na Justiça Federal. Boa parte dos indeferimentos vem de falta de documento ou de período de contribuição não reconhecido, e não da ausência do direito."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto tempo demora para sair o benefício?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Depende do tipo de benefício e da agência. A lei fixa prazos para a análise administrativa, mas na prática eles variam bastante, e na via judicial o tempo costuma ser maior. Na consulta é possível estimar o cenário do seu caso."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Trabalhei a vida toda na roça e nunca contribuí. Tenho direito a alguma aposentadoria?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Possivelmente. O trabalhador rural em regime de economia familiar é segurado especial e pode se aposentar por idade sem ter feito contribuições, desde que comprove o tempo de atividade rural exigido por lei. A prova é documental e testemunhal — por isso guarde notas de produtor, contratos de arrendamento, registros em sindicato, fichas escolares dos filhos e qualquer documento em que conste a profissão."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que documentos devo levar na primeira consulta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Documento com foto, CPF, comprovante de endereço, carteira de trabalho e o extrato do CNIS, que você emite pelo Meu INSS. Se já houve pedido no INSS, leve também a carta de indeferimento. Em caso rural, os documentos que comprovem a atividade no campo; em caso de incapacidade, laudos, exames e receitas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto custa? Preciso pagar algo para começar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Os honorários são definidos em contrato escrito, apresentado e explicado antes de o escritório tomar qualquer providência, e variam conforme o tipo de benefício. Não existe cobrança sem contrato assinado."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vocês atendem quem mora em outra cidade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Além do atendimento presencial em Siqueira Campos e em Quatiguá, o escritório atende de forma remota para todo o Brasil, por WhatsApp, telefone e videochamada, com envio de documentos por meio digital."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Qual a diferença entre auxílio-doença e aposentadoria por invalidez?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hoje eles se chamam auxílio por incapacidade temporária e aposentadoria por incapacidade permanente. O primeiro é pago enquanto durar a incapacidade para o trabalho. A segunda vale quando a perícia conclui que a incapacidade é definitiva e não há como reabilitar o segurado em outra função. Os dois dependem de perícia médica do INSS."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quem tem direito à pensão por morte?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Os dependentes do segurado falecido: cônjuge ou companheiro, filhos menores de 21 anos ou com deficiência e, em determinadas situações, pais e irmãos. A duração do pagamento varia conforme a idade do beneficiário e o tempo de casamento ou de união estável. Vale tanto para segurados urbanos quanto rurais."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é o BPC/LOAS e quem pode receber?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "É um benefício assistencial de um salário mínimo, pago a idosos a partir de 65 anos e a pessoas com deficiência, desde que a renda familiar por pessoa seja baixa — em regra, inferior a um quarto do salário mínimo, com exceções previstas em lei. Não exige contribuição ao INSS, e por não ser aposentadoria não gera décimo terceiro nem pensão por morte."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é planejamento previdenciário e para quem serve?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "É a análise do seu histórico de contribuições para identificar qual regra de aposentadoria é mais vantajosa e qual o melhor momento para dar entrada. Serve principalmente para quem está chegando perto de se aposentar: a diferença entre pedir agora e esperar alguns meses pode significar um valor bem maior no benefício, pelo resto da vida."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Meu CNIS está com períodos faltando. Dá para corrigir?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Períodos não registrados ou registrados de forma errada podem ser incluídos ou corrigidos com carteira de trabalho, contracheques, recibos e outros documentos. Acertar o CNIS antes de pedir a aposentadoria costuma ser o que evita a perda de tempo de contribuição."
+        }
+      }
+    ]
+  }
+  </script>
+
 
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Poppins:wght@400;500;600&family=Raleway:wght@600;700&display=swap" rel="stylesheet">
 
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -77,6 +372,70 @@
   <link href="assets/css/main.css" rel="stylesheet">
 
   <style>
+    /* FAQ — usa <details> nativo: sem JavaScript, e o texto da resposta fica no
+       HTML mesmo com o item fechado, então buscador e IA conseguem ler tudo. */
+    .faq .faq-lista {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .faq .faq-item {
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-left: 3px solid transparent;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .faq .faq-item[open] {
+      border-left-color: var(--accent-color);
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
+    }
+    .faq .faq-item > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 52px 18px 22px;
+      position: relative;
+      font-family: var(--heading-font);
+      font-weight: 600;
+      font-size: 1.02rem;
+      color: var(--heading-color);
+    }
+    .faq .faq-item > summary::-webkit-details-marker { display: none; }
+    .faq .faq-item > summary::after {
+      content: "+";                 /* + vira × quando aberto */
+      position: absolute;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      line-height: 1;
+      color: var(--accent-color);
+      transition: transform .25s;
+    }
+    .faq .faq-item[open] > summary::after {
+      content: "×";
+    }
+    .faq .faq-item > summary:hover { color: var(--accent-color); }
+    .faq .faq-resposta {
+      padding: 0 22px 20px 22px;
+      color: var(--default-color);
+      line-height: 1.75;
+    }
+    .faq .faq-resposta p { margin: 0; }
+    .faq .faq-aviso {
+      max-width: 860px;
+      margin: 26px auto 0 auto;
+      font-size: .88rem;
+      color: #777;
+      text-align: center;
+    }
+    .faq .faq-aviso a { color: var(--accent-color); }
+
+    /* Quem prefere menos animação não deve ser forçado a ver a transição. */
+    @media (prefers-reduced-motion: reduce) {
+      .faq .faq-item, .faq .faq-item > summary::after { transition: none; }
+    }
+
     /* Botao flutuante WhatsApp - apenas mobile */
     .whatsapp-float {
       display: none;
@@ -156,10 +515,8 @@
 <header id="header" class="header d-flex align-items-center fixed-top">
   <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-    <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
-      <h1 class="sitename"></h1>
-      <span></span>
-    </a>
+    <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0"
+       aria-label="Muraro Gonçalves Advocacia — ir para o início"></a>
 
     <nav id="navmenu" class="navmenu">
       <ul>
@@ -167,6 +524,7 @@
         <li><a href="#about">Sobre Nós</a></li>
         <li><a href="#services">Serviços</a></li>
         <li><a href="#team">Equipe</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
         <li><a href="#contact">Contato</a></li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -183,14 +541,14 @@
 
   <h1 class="visually-hidden">Advocacia Previdenciária em Siqueira Campos e Quatiguá/PR — Muraro Gonçalves</h1>
 
-  <img src="assets/img/banner2.jpg" alt="Sala de atendimento do escritório Muraro Gonçalves Advocacia Previdenciária, em Siqueira Campos/PR" data-aos="fade-in">
+  <img src="assets/img/banner2.jpg" alt="Sala de atendimento do escritório Muraro Gonçalves Advocacia Previdenciária, em Siqueira Campos/PR" data-aos="fade-in" fetchpriority="high" decoding="async">
 
   <div class="container">
 
 <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
   <div class="col-xl-9 col-lg-10">
     <!-- Logo: visível em TODOS os dispositivos -->
-    <img src="assets/img/log.png" alt="Logo Muraro Gonçalves Advocacia" class="img-fluid" style="max-width: 500px; height: auto; display: block; margin-left: auto; margin-right: auto; margin-bottom: 20px;">
+    <img src="assets/img/log.png" alt="Logo Muraro Gonçalves Advocacia" class="img-fluid" style="max-width: 500px; height: auto; display: block; margin-left: auto; margin-right: auto; margin-bottom: 20px;" decoding="async">
 
     <!-- Botão WhatsApp visível apenas no celular -->
     <div class="hero-mobile-cta d-block d-md-none" style="margin-top: 180px;">
@@ -238,7 +596,7 @@
 
     <div class="row gy-4">
       <div class="col-lg-6 order-1 order-lg-2">
-        <img src="assets/img/isabelle-muraro.jpg" class="img-fluid" alt="Advogada Isabelle Muraro Gonçalves, especialista em direito previdenciário">
+        <img src="assets/img/isabelle-muraro.jpg" class="img-fluid" alt="Advogada Isabelle Muraro Gonçalves, especialista em direito previdenciário" loading="lazy" decoding="async">
       </div>
       <div class="col-lg-6 order-2 order-lg-1 content">
         <h3>Muraro Gonçalves Advocacia:</h3>
@@ -271,7 +629,7 @@
 
     <div class="row gy-4">
       <div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100">
-        <img src="assets/img/Isabele_Corporativo_KauanyMendonca_2025-7 (1).png" class="img-fluid" style="max-height: 500px; width: 100%; object-fit: cover; border-radius: 8px;" alt="Vantagens de contratar um advogado especialista em previdência">
+        <img src="assets/img/isabelle-perfil.jpg" class="img-fluid" style="max-height: 500px; width: 100%; object-fit: cover; border-radius: 8px;" alt="Vantagens de contratar um advogado especialista em previdência" loading="lazy" decoding="async">
       </div>
       <div class="col-lg-6">
 
@@ -434,7 +792,7 @@
     <!-- Call To Action Section -->
 <section id="call-to-action" class="call-to-action section dark-background">
 
-  <img src="assets/img/banner.jpg" alt="Recepção do escritório Muraro Gonçalves Advocacia Previdenciária" data-aos="fade-in">
+  <img src="assets/img/banner.jpg" alt="Recepção do escritório Muraro Gonçalves Advocacia Previdenciária" data-aos="fade-in" loading="lazy" decoding="async">
 
   <div class="container">
     <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
@@ -472,7 +830,7 @@
       <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-congressos">
-          <img src="assets/img/congresso.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário">
+          <img src="assets/img/congresso.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Congresso - Dia 1</h4>
             <p>Participação em evento nacional para atualização.</p>
@@ -480,7 +838,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-congressos">
-          <img src="assets/img/congresso2.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário">
+          <img src="assets/img/congresso2.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Congresso - Dia 2</h4>
             <p>Sessão de atualização e networking.</p>
@@ -488,7 +846,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-congressos">
-          <img src="assets/img/congresso3.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário">
+          <img src="assets/img/congresso3.jpg" class="img-fluid" alt="Congresso de Direito Previdenciário" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Congresso - Dia 3</h4>
             <p>Encerramento do evento e novas tendências.</p>
@@ -497,7 +855,7 @@
         </div>
 
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (1)</h4>
             <p>Reunião de colegas e parceiros.</p>
@@ -505,7 +863,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento2.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento2.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (2)</h4>
             <p>Sessão de fotos durante o evento.</p>
@@ -513,7 +871,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento3.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento3.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (3)</h4>
             <p>Networking e discussões jurídicas.</p>
@@ -521,7 +879,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento4.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento4.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (4)</h4>
             <p>Participação ativa em debates.</p>
@@ -529,7 +887,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento5.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento5.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (5)</h4>
             <p>Momento de confraternização.</p>
@@ -537,7 +895,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento6.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento6.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (6)</h4>
             <p>Recebimento de certificado.</p>
@@ -545,7 +903,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento7.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento7.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (7)</h4>
             <p>Mesa de debates.</p>
@@ -553,7 +911,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento8.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento8.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (8)</h4>
             <p>Foto em grupo.</p>
@@ -561,7 +919,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-eventos">
-          <img src="assets/img/evento9.jpg" class="img-fluid" alt="Evento profissional">
+          <img src="assets/img/evento9.jpg" class="img-fluid" alt="Evento profissional" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Evento Profissional (9)</h4>
             <p>Sessão de autógrafos.</p>
@@ -570,7 +928,7 @@
         </div>
         
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-palestras">
-          <img src="assets/img/palestra-previdencia.jpg" class="img-fluid" alt="Foto de palestra">
+          <img src="assets/img/palestra-previdencia.jpg" class="img-fluid" alt="Foto de palestra" loading="lazy" decoding="async">
           <div class="portfolio-info">
             <h4>Palestra sobre Previdência</h4>
             <p>Atualização das regras e tendências.</p>
@@ -600,7 +958,7 @@
   </div></section>
 
 <section id="testimonials" class="testimonials section dark-background">
-  <img src="assets/img/recp.jpg" class="testimonials-bg" alt="Fundo com temática de escritório de advocacia">
+  <img src="assets/img/recp.jpg" class="testimonials-bg" alt="Fundo com temática de escritório de advocacia" loading="lazy" decoding="async">
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -696,7 +1054,7 @@
       <div class="col-lg-8 col-md-12 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
         <div class="team-member w-100">
           <div class="member-img">
-            <img src="assets/img/Isabele_Corporativo_KauanyMendonca_2025-6.jpg" class="img-fluid" alt="Isabelle Muraro Gonçalves">
+            <img src="assets/img/Isabele_Corporativo_KauanyMendonca_2025-6.jpg" class="img-fluid" alt="Isabelle Muraro Gonçalves" loading="lazy" decoding="async">
             <div class="social">
               <a href="https://wa.me/5543999292559"><i class="bi bi-whatsapp"></i></a>
             </div>
@@ -723,6 +1081,75 @@
       </div></div>
   </div>
 </section><!-- /Team Section -->
+
+    <!-- FAQ Section -->
+<section id="faq" class="faq section">
+
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Perguntas Frequentes</h2>
+    <p>Dúvidas que mais aparecem no atendimento</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="faq-lista">
+      <details class="faq-item">
+        <summary>Preciso de advogado para pedir um benefício no INSS?</summary>
+        <div class="faq-resposta"><p>Não é obrigatório: qualquer segurado pode dar entrada sozinho pelo Meu INSS. O advogado ajuda a reunir a documentação certa antes do pedido, o que costuma evitar exigências e indeferimentos, e passa a ser indispensável quando o caso precisa ir para a Justiça.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>O INSS negou meu pedido. Ainda dá para conseguir o benefício?</summary>
+        <div class="faq-resposta"><p>Na maioria das vezes, sim. Cabe recurso administrativo dentro do prazo indicado na carta de indeferimento e, esgotada essa via, o direito pode ser discutido na Justiça Federal. Boa parte dos indeferimentos vem de falta de documento ou de período de contribuição não reconhecido, e não da ausência do direito.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Quanto tempo demora para sair o benefício?</summary>
+        <div class="faq-resposta"><p>Depende do tipo de benefício e da agência. A lei fixa prazos para a análise administrativa, mas na prática eles variam bastante, e na via judicial o tempo costuma ser maior. Na consulta é possível estimar o cenário do seu caso.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Trabalhei a vida toda na roça e nunca contribuí. Tenho direito a alguma aposentadoria?</summary>
+        <div class="faq-resposta"><p>Possivelmente. O trabalhador rural em regime de economia familiar é segurado especial e pode se aposentar por idade sem ter feito contribuições, desde que comprove o tempo de atividade rural exigido por lei. A prova é documental e testemunhal — por isso guarde notas de produtor, contratos de arrendamento, registros em sindicato, fichas escolares dos filhos e qualquer documento em que conste a profissão.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Que documentos devo levar na primeira consulta?</summary>
+        <div class="faq-resposta"><p>Documento com foto, CPF, comprovante de endereço, carteira de trabalho e o extrato do CNIS, que você emite pelo Meu INSS. Se já houve pedido no INSS, leve também a carta de indeferimento. Em caso rural, os documentos que comprovem a atividade no campo; em caso de incapacidade, laudos, exames e receitas.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Quanto custa? Preciso pagar algo para começar?</summary>
+        <div class="faq-resposta"><p>Os honorários são definidos em contrato escrito, apresentado e explicado antes de o escritório tomar qualquer providência, e variam conforme o tipo de benefício. Não existe cobrança sem contrato assinado.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Vocês atendem quem mora em outra cidade?</summary>
+        <div class="faq-resposta"><p>Sim. Além do atendimento presencial em Siqueira Campos e em Quatiguá, o escritório atende de forma remota para todo o Brasil, por WhatsApp, telefone e videochamada, com envio de documentos por meio digital.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Qual a diferença entre auxílio-doença e aposentadoria por invalidez?</summary>
+        <div class="faq-resposta"><p>Hoje eles se chamam auxílio por incapacidade temporária e aposentadoria por incapacidade permanente. O primeiro é pago enquanto durar a incapacidade para o trabalho. A segunda vale quando a perícia conclui que a incapacidade é definitiva e não há como reabilitar o segurado em outra função. Os dois dependem de perícia médica do INSS.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Quem tem direito à pensão por morte?</summary>
+        <div class="faq-resposta"><p>Os dependentes do segurado falecido: cônjuge ou companheiro, filhos menores de 21 anos ou com deficiência e, em determinadas situações, pais e irmãos. A duração do pagamento varia conforme a idade do beneficiário e o tempo de casamento ou de união estável. Vale tanto para segurados urbanos quanto rurais.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>O que é o BPC/LOAS e quem pode receber?</summary>
+        <div class="faq-resposta"><p>É um benefício assistencial de um salário mínimo, pago a idosos a partir de 65 anos e a pessoas com deficiência, desde que a renda familiar por pessoa seja baixa — em regra, inferior a um quarto do salário mínimo, com exceções previstas em lei. Não exige contribuição ao INSS, e por não ser aposentadoria não gera décimo terceiro nem pensão por morte.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>O que é planejamento previdenciário e para quem serve?</summary>
+        <div class="faq-resposta"><p>É a análise do seu histórico de contribuições para identificar qual regra de aposentadoria é mais vantajosa e qual o melhor momento para dar entrada. Serve principalmente para quem está chegando perto de se aposentar: a diferença entre pedir agora e esperar alguns meses pode significar um valor bem maior no benefício, pelo resto da vida.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Meu CNIS está com períodos faltando. Dá para corrigir?</summary>
+        <div class="faq-resposta"><p>Sim. Períodos não registrados ou registrados de forma errada podem ser incluídos ou corrigidos com carteira de trabalho, contracheques, recibos e outros documentos. Acertar o CNIS antes de pedir a aposentadoria costuma ser o que evita a perda de tempo de contribuição.</p></div>
+      </details>
+    </div>
+
+    <p class="faq-aviso">
+      As respostas acima são informativas e não substituem uma consulta jurídica.
+      Cada caso previdenciário depende do histórico de contribuições e dos documentos
+      do segurado. <a href="#contact">Fale com o escritório</a> para uma análise do seu caso.
+    </p>
+  </div>
+
+</section><!-- /FAQ Section -->
 
     <!-- Contact Section -->
 <section id="contact" class="contact section">
