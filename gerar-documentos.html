@@ -215,34 +215,79 @@
           <label class="form-label">Local</label>
           <input type="text" class="form-control" id="local" value="Siqueira Campos/PR">
         </div>
+        <div class="col-12">
+          <label class="form-label">Objeto do contrato *</label>
+          <select class="form-control" id="objetoContrato">
+            <option value="">Selecione...</option>
+            <optgroup label="Aposentadoria">
+              <option>aposentadoria por idade</option>
+              <option>aposentadoria por tempo de contribuição</option>
+              <option>aposentadoria rural</option>
+              <option>aposentadoria urbana</option>
+            </optgroup>
+            <optgroup label="Benefício por incapacidade">
+              <option>benefício por incapacidade temporária</option>
+              <option>benefício por incapacidade permanente</option>
+            </optgroup>
+            <option>auxílio-acidente</option>
+            <option>salário-maternidade</option>
+            <option>auxílio-reclusão</option>
+            <option>pensão por morte</option>
+            <option>requerimento/retificação de CTC</option>
+            <option value="__outro__">Outro (digitar)...</option>
+          </select>
+          <input type="text" class="form-control mt-2" id="objetoContratoOutro"
+                 placeholder="Descreva o objeto do contrato" style="display:none;">
+          <div class="form-text">
+            Entra na Cláusula Primeira do Contrato de Honorários:
+            &ldquo;…contratou os serviços profissionais do Contratado para processo administrativo
+            e/ou judicial de <strong id="previaObjeto">…</strong>.&rdquo;
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Honorários — alínea adicional <span class="text-muted fw-normal">(opcional)</span></label>
+          <textarea class="form-control" id="honorariosExtra" rows="2"
+                    placeholder="Ex: Em caso de salário-maternidade: 30% (trinta por cento) sobre o valor total recebido a título de benefício;"></textarea>
+          <div class="form-text">
+            A Cláusula Quarta já traz duas alíneas fixas: <strong>a)</strong> incapacidade temporária e
+            <strong>b)</strong> aposentadoria, pensão por morte, BPC, incapacidade permanente ou auxílio-acidente.
+            Preencha aqui só quando o caso não se encaixar em nenhuma das duas — vira a alínea <strong>c)</strong>.
+            Deixando em branco, o contrato sai idêntico ao modelo.
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- PASSO 3: Tipo de benefício -->
     <div class="card-doc">
       <div class="section-title"><i class="bi bi-check2-square me-2"></i>Passo 3 — Tipo de benefício (Termo de Representação)</div>
+      <p class="text-muted mb-3" style="font-size:0.88rem;">
+        Os 12 benefícios saem sempre marcados no Termo de Representação, dando poderes amplos
+        perante o INSS — por isso ficam fixos aqui. Escolha apenas a opção do caso nos pares
+        abaixo (urbana ou rural, temporária ou permanente, idoso ou PCD).
+      </p>
       <div class="row tipo-beneficio">
         <div class="col-md-6">
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b1" checked><label class="form-check-label" for="b1">Aposentadoria por idade</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b1" checked disabled><label class="form-check-label" for="b1">Aposentadoria por idade</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b1sub" id="b1u" value="urbana"><label class="form-check-label" for="b1u">Urbana</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b1sub" id="b1r" value="rural"><label class="form-check-label" for="b1r">Rural</label></div>
-          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b2" checked><label class="form-check-label" for="b2">Aposentadoria por tempo de contribuição</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b3" checked><label class="form-check-label" for="b3">Aposentadoria especial</label></div>
-          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b4" checked><label class="form-check-label" for="b4">Benefício por incapacidade</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b2" checked disabled><label class="form-check-label" for="b2">Aposentadoria por tempo de contribuição</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b3" checked disabled><label class="form-check-label" for="b3">Aposentadoria especial</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b4" checked disabled><label class="form-check-label" for="b4">Benefício por incapacidade</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b4sub" id="b4t" value="temporaria"><label class="form-check-label" for="b4t">Temporária</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b4sub" id="b4p" value="permanente"><label class="form-check-label" for="b4p">Permanente</label></div>
         </div>
         <div class="col-md-6">
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b5" checked><label class="form-check-label" for="b5">Auxílio-acidente</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b6" checked><label class="form-check-label" for="b6">Pensão por morte urbana ou rural</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b7" checked><label class="form-check-label" for="b7">Benefício prestação continuada</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b5" checked disabled><label class="form-check-label" for="b5">Auxílio-acidente</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b6" checked disabled><label class="form-check-label" for="b6">Pensão por morte urbana ou rural</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b7" checked disabled><label class="form-check-label" for="b7">Benefício prestação continuada</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b7sub" id="b7i" value="idoso"><label class="form-check-label" for="b7i">Idoso</label></div>
           <div class="form-check ms-3"><input class="form-check-input sub-opcao" type="radio" name="b7sub" id="b7p" value="pcd"><label class="form-check-label" for="b7p">PCD</label></div>
-          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b8" checked><label class="form-check-label" for="b8">Atualização de dados cadastrais</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b9" checked><label class="form-check-label" for="b9">Salário maternidade</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b10" checked><label class="form-check-label" for="b10">Requerimento de acerto de CNIS</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b11" checked><label class="form-check-label" for="b11">Acréscimo de 25%</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="b12" checked><label class="form-check-label" for="b12">Requerimentos em geral</label></div>
+          <div class="form-check mt-1"><input class="form-check-input" type="checkbox" id="b8" checked disabled><label class="form-check-label" for="b8">Atualização de dados cadastrais</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b9" checked disabled><label class="form-check-label" for="b9">Salário maternidade</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b10" checked disabled><label class="form-check-label" for="b10">Requerimento de acerto de CNIS</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b11" checked disabled><label class="form-check-label" for="b11">Acréscimo de 25%</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b12" checked disabled><label class="form-check-label" for="b12">Requerimentos em geral</label></div>
         </div>
       </div>
     </div>
@@ -444,30 +489,9 @@
       }
     }
 
-    // Os 12 benefícios do Termo de Representação, na mesma ordem do modelo .docx.
-    // `sub` aponta pro grupo de escolha única (urbana/rural etc.) do formulário.
-    const BENEFICIOS = [
-      { id: 'b1',  rotulo: 'aposentadoria por idade',                sub: 'b1sub' },
-      { id: 'b2',  rotulo: 'aposentadoria por tempo de contribuição' },
-      { id: 'b3',  rotulo: 'aposentadoria especial' },
-      { id: 'b4',  rotulo: 'benefício por incapacidade',             sub: 'b4sub' },
-      { id: 'b5',  rotulo: 'auxílio-acidente' },
-      { id: 'b6',  rotulo: 'pensão por morte urbana ou rural' },
-      { id: 'b7',  rotulo: 'benefício de prestação continuada',      sub: 'b7sub' },
-      { id: 'b8',  rotulo: 'atualização de dados cadastrais' },
-      { id: 'b9',  rotulo: 'salário maternidade' },
-      { id: 'b10', rotulo: 'requerimento de acerto de CNIS' },
-      { id: 'b11', rotulo: 'acréscimo de 25%' },
-      { id: 'b12', rotulo: 'requerimentos em geral' },
-    ];
-
-    // Rótulo que aparece no documento pra cada sub-opção.
-    const SUBOPCOES = {
-      urbana: 'urbana', rural: 'rural',
-      temporaria: 'temporária', permanente: 'permanente',
-      idoso: 'idoso', pcd: 'PCD',
-    };
-
+    // Sub-opções do Termo de Representação (urbana/rural, temporária/permanente,
+    // idoso/PCD). Os 12 benefícios em si já saem marcados direto do template,
+    // então só estes pares dependem do formulário.
     function subEscolhida(grupo) {
       return document.querySelector(`input[name="${grupo}"]:checked`)?.value || '';
     }
@@ -487,18 +511,32 @@
       });
     });
 
-    // Frase usada na CLÁUSULA PRIMEIRA do contrato: "...judicial de {beneficios}."
-    function getBeneficios() {
-      const escolhidos = BENEFICIOS
-        .filter(b => document.getElementById(b.id)?.checked)
-        .map(b => {
-          const sub = b.sub ? SUBOPCOES[subEscolhida(b.sub)] : '';
-          return sub ? `${b.rotulo} ${sub}` : b.rotulo;
-        });
+    // Objeto do contrato — entra na CLÁUSULA PRIMEIRA:
+    // "...para processo administrativo e/ou judicial de {objeto_contrato}."
+    const selectObjeto = document.getElementById('objetoContrato');
+    const inputObjeto  = document.getElementById('objetoContratoOutro');
+    const previaObjeto = document.getElementById('previaObjeto');
 
-      if (!escolhidos.length) return 'benefício previdenciário';
-      if (escolhidos.length === 1) return escolhidos[0];
-      return escolhidos.slice(0, -1).join(', ') + ' e ' + escolhidos[escolhidos.length - 1];
+    function getObjetoContrato() {
+      if (selectObjeto.value === '__outro__') return inputObjeto.value.trim();
+      return selectObjeto.value;
+    }
+
+    function atualizarPreviaObjeto() {
+      const outro = selectObjeto.value === '__outro__';
+      inputObjeto.style.display = outro ? '' : 'none';
+      if (!outro) inputObjeto.value = '';
+      previaObjeto.textContent = getObjetoContrato() || '…';
+    }
+
+    selectObjeto.addEventListener('change', atualizarPreviaObjeto);
+    inputObjeto.addEventListener('input', atualizarPreviaObjeto);
+
+    // Alínea opcional da CLÁUSULA QUARTA (honorários), pros casos que não se
+    // encaixam nas duas alíneas fixas do modelo.
+    function getHonorariosExtra() {
+      const texto = document.getElementById('honorariosExtra').value.trim();
+      return texto ? [{ texto }] : [];
     }
 
     // Formatar data
@@ -520,12 +558,14 @@
         endereco:     document.getElementById('endereco').value.trim(),
         data:         formatarData(document.getElementById('dataAtendimento').value),
         local:        document.getElementById('local').value.trim(),
-        beneficios:   getBeneficios(),
+        objeto_contrato: getObjetoContrato(),
+        // Lista com zero ou um item: vazia, o docxtemplater apaga a alínea inteira.
+        honorarios_extra: getHonorariosExtra(),
         ...marcasSubopcoes(),
       };
 
       // Validação básica
-      const obrigatorios = ['nome','cpf','celular','estado_civil','profissao','endereco'];
+      const obrigatorios = ['nome','cpf','celular','estado_civil','profissao','endereco','objeto_contrato'];
       const faltando = obrigatorios.filter(k => !campos[k]);
       if (faltando.length) {
         mostrarStatus('error', 'Preencha todos os campos obrigatórios antes de gerar.');

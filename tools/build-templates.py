@@ -158,10 +158,36 @@ def taguear_clausula_primeira(paras, textos):
         if t.startswith('CLÁUSULA PRIMEIRA:'):
             if 'benefício por incapacidade' not in t:
                 raise ValueError('CLAUSULA PRIMEIRA sem o trecho esperado: %r' % t)
-            trocas[i] = t.replace('benefício por incapacidade', '{beneficios}')
+            trocas[i] = t.replace('benefício por incapacidade', '{objeto_contrato}')
     if not trocas:
         raise LookupError('CLAUSULA PRIMEIRA nao encontrada')
     return trocas
+
+
+def inserir_honorarios_extra(xml):
+    """Acrescenta uma alinea opcional na CLAUSULA QUARTA (honorarios).
+
+    Pedido do escritorio: as duas alineas fixas cobrem incapacidade temporaria e
+    o grupo aposentadoria/pensao/BPC/incapacidade permanente/auxilio-acidente.
+    Quando o cliente contrata algo fora disso (salario-maternidade, auxilio-
+    reclusao, retificacao de CTC), precisa de um item escrito na hora.
+
+    Entra depois da alinea b) e antes do "Tais valores serao pagos...", herdando
+    a formatacao de lista (letras a, b, c). Vem envolvido num bloco condicional:
+    com o campo vazio, o docxtemplater apaga os tres paragrafos e o contrato sai
+    identico ao modelo.
+    """
+    for p in RE_PARA.findall(xml):
+        if texto_de(p).startswith('Em caso de aposentadoria'):
+            alvo = p
+            break
+    else:
+        raise LookupError('alinea b) da CLAUSULA QUARTA nao encontrada')
+
+    novos = ''.join(trocar_texto(alvo, t)
+                    for t in ('{#honorarios_extra}', '{texto}', '{/honorarios_extra}'))
+    pos = xml.index(alvo) + len(alvo)
+    return xml[:pos] + novos + xml[pos:]
 
 
 def marcar_lista_beneficios(numbering_xml):
@@ -209,6 +235,8 @@ def construir(entrada, saida):
 
     origem = zipfile.ZipFile(entrada)
     doc, trocas = aplicar(origem.read('word/document.xml').decode('utf-8'), funcoes)
+    if nome.startswith('5-'):
+        doc = inserir_honorarios_extra(doc)
 
     with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as destino:
         for item in origem.infolist():
