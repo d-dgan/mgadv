@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Os modelos e templates do gerador de documentos sao ZIPs: nunca normalizar
+# fim de linha neles, senao o Word passa a acusar arquivo corrompido.
+*.docx binary

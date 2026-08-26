@@ -1,0 +1,8 @@
+# Pasta de testes: contém os .docx originais do escritório, com dados reais de
+# cliente (nome, CPF, telefone, endereço). Nunca deve ir pro repositório — o
+# site é publicado no GitHub Pages.
+testesdocs/
+
+# Cache do Python gerado pelos scripts em tools/
+__pycache__/
+*.pyc
