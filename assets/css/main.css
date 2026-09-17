@@ -1018,16 +1018,14 @@ section,
 --------------------------------------------------------------*/
 .features .features-image {
   position: relative;
-  min-height: 400px;
+  min-height: 0;
 }
 
 .features .features-image img {
-  position: absolute;
-  inset: 0;
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  border-radius: 8px;
   z-index: 1;
 }
 
