@@ -1826,4 +1826,72 @@ section,
 .curriculum-list li:hover {
   transform: translateX(8px);
 }
+
+.curriculum-list li > i {
+  color: var(--accent-color);
+  flex: 0 0 auto;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.curriculum-entry {
+  min-width: 0;
+}
+
+.curriculum-detail::before {
+  content: " ";
+}
+
+.curriculum-detail-dash::before {
+  content: " – ";
+}
+
+@media (max-width: 767px) {
+  .team .section-title {
+    padding-bottom: 40px;
+  }
+
+  .team .section-title h2 {
+    display: block;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  .team .section-title h2::after {
+    display: none;
+  }
+
+  .team .section-title p {
+    display: block;
+    font-size: 32px;
+    line-height: 1.15;
+  }
+
+  .curriculum-list li {
+    align-items: flex-start;
+    padding: 15px 14px;
+  }
+
+  .curriculum-list li > i {
+    margin-top: 2px;
+  }
+
+  .curriculum-entry strong,
+  .curriculum-detail {
+    display: block;
+  }
+
+  .curriculum-entry strong {
+    line-height: 1.3;
+  }
+
+  .curriculum-detail {
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+
+  .curriculum-detail::before,
+  .curriculum-detail-dash::before {
+    content: "";
+  }
 }
