@@ -792,7 +792,7 @@ section,
   position: relative;
 }
 
-.section-title h2 {
+.section-title .section-kicker {
   font-size: 14px;
   font-weight: 500;
   padding: 0;
@@ -804,7 +804,7 @@ section,
   position: relative;
 }
 
-.section-title h2::after {
+.section-title .section-kicker::after {
   content: "";
   width: 120px;
   height: 1px;
@@ -813,7 +813,7 @@ section,
   margin: 4px 10px;
 }
 
-.section-title p {
+.section-title h2 {
   color: var(--heading-color);
   margin: 0;
   font-size: 36px;
@@ -824,7 +824,7 @@ section,
   padding-bottom: 15px;
 }
 
-.section-title p::after {
+.section-title h2::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -1851,17 +1851,17 @@ section,
     padding-bottom: 40px;
   }
 
-  .team .section-title h2 {
+  .team .section-title .section-kicker {
     display: block;
     line-height: 1.4;
     margin-bottom: 12px;
   }
 
-  .team .section-title h2::after {
+  .team .section-title .section-kicker::after {
     display: none;
   }
 
-  .team .section-title p {
+  .team .section-title h2 {
     display: block;
     font-size: 32px;
     line-height: 1.15;
@@ -1893,5 +1893,61 @@ section,
   .curriculum-detail::before,
   .curriculum-detail-dash::before {
     content: "";
+  }
+}
+
+/* Sobre Nós: no desktop a foto é bem mais alta que o texto, o que deixava
+   um vazio na coluna da esquerda. Fonte maior e colunas centralizadas
+   equilibram o bloco sem mexer no mobile, que tem tratamento próprio. */
+@media (min-width: 992px) {
+  .about .row {
+    align-items: center;
+  }
+
+  .about .content h3 {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .about .content p {
+    font-size: 1.125rem;
+    line-height: 1.85;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Equipe: no desktop a foto fica ao lado do currículo; empilhado é só no
+   mobile. O cartão vinha empilhando nas duas larguras, o que deixava a
+   foto gigante e o texto longe do topo da seção. */
+@media (min-width: 992px) {
+  .team .row > [class*="col-lg-"] {
+    width: 100%;
+    max-width: 1140px;
+    flex: 0 0 auto;
+  }
+
+  .team .team-member {
+    display: grid;
+    grid-template-columns: minmax(260px, 38%) 1fr;
+    align-items: stretch;
+  }
+
+  .team .team-member .member-img {
+    height: 100%;
+  }
+
+  .team .team-member .member-img img {
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center 20%;
+  }
+
+  .team .team-member .member-info {
+    padding: 40px 38px;
+  }
+
+  .team .team-member .member-info h4 {
+    font-size: 22px;
   }
 }
